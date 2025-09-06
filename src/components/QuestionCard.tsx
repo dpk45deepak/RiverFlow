@@ -3,6 +3,7 @@
 import React from "react";
 import { BorderBeam } from "./magicui/border-beam";
 import Link from "next/link";
+import Image from "next/image";
 import { Models } from "appwrite";
 import slugify from "@/utils/slugify";
 import { avatars } from "@/models/client/config";
@@ -48,9 +49,11 @@ const QuestionCard = ({ ques }: { ques: Models.Document }) => {
                         </Link>
                     ))}
                     <div className="ml-auto flex items-center gap-2">
-                        <img
+                        <Image
                             src={avatars.getInitials(ques.author.name, 24, 24).href}
                             alt={ques.author.name}
+                            width={28}
+                            height={28}
                             className="h-7 w-7 rounded-full border border-white/20"
                         />
                         <Link
@@ -59,7 +62,7 @@ const QuestionCard = ({ ques }: { ques: Models.Document }) => {
                         >
                             {ques.author.name}
                         </Link>
-                        <span className="text-xs text-white/50">"{ques.author.reputation}"</span>
+                        <span className="text-xs text-white/50">&quot;{ques.author.reputation}&quot;</span>
                     </div>
                     <span className="text-xs ml-1 text-white/50">
                         asked {convertDateToRelativeTime(new Date(ques.$createdAt))}

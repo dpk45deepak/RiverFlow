@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/utils/cn";
-import { CSSProperties, ReactElement, ReactNode, useEffect, useRef, useState } from "react";
+import { CSSProperties, ReactElement, ReactNode, useEffect, useRef, useState, useCallback } from "react";
 
 interface MousePosition {
     x: number;
@@ -41,11 +41,18 @@ const MagicContainer = ({ children, className }: MagicContainerProps) => {
     const containerSize = useRef<{ w: number; h: number }>({ w: 0, h: 0 });
     const [boxes, setBoxes] = useState<Array<HTMLElement>>([]);
 
+    const init = useCallback(() => {
+        if (containerRef.current) {
+            containerSize.current.w = containerRef.current.offsetWidth;
+            containerSize.current.h = containerRef.current.offsetHeight;
+        }
+    }, []);
+
     useEffect(() => {
         init();
         containerRef.current &&
             setBoxes(Array.from(containerRef.current.children).map(el => el as HTMLElement));
-    }, []);
+    }, [init]);
 
     useEffect(() => {
         init();
@@ -54,20 +61,9 @@ const MagicContainer = ({ children, className }: MagicContainerProps) => {
         return () => {
             window.removeEventListener("resize", init);
         };
-    }, [setBoxes]);
+    }, [init]);
 
-    useEffect(() => {
-        onMouseMove();
-    }, [mousePosition]);
-
-    const init = () => {
-        if (containerRef.current) {
-            containerSize.current.w = containerRef.current.offsetWidth;
-            containerSize.current.h = containerRef.current.offsetHeight;
-        }
-    };
-
-    const onMouseMove = () => {
+    const onMouseMove = useCallback(() => {
         if (containerRef.current) {
             const rect = containerRef.current.getBoundingClientRect();
             const { w, h } = containerSize.current;
@@ -90,7 +86,11 @@ const MagicContainer = ({ children, className }: MagicContainerProps) => {
                 }
             });
         }
-    };
+    }, [boxes, mousePosition]);
+
+    useEffect(() => {
+        onMouseMove();
+    }, [mousePosition, onMouseMove]);
 
     return (
         <div className={cn("h-full w-full", className)} ref={containerRef}>
