@@ -12,10 +12,10 @@ const EditQues = ({ question }: { question: Models.Document }) => {
     const router = useRouter();
 
     React.useEffect(() => {
-        if (question.authorId !== user?.$id) {
+        if (user && user.$id !== question.authorId) {
             router.push(`/questions/${question.$id}/${slugify(question.title)}`);
         }
-    }, []);
+    }, [user, question, router]);
 
     if (user?.$id !== question.authorId) return null;
 
