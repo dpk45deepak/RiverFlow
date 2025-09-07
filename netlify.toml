@@ -1,10 +1,2 @@
-[build]
-  # Project root jahan package.json hai
-  base = "."          
-  # Build command
-  command = "npm run build"
-  # Plugin handle karega publish automatically
-  publish = "out"    
-
 [[plugins]]
-  package = "@netlify/plugin-nextjs"
+package = "@netlify/plugin-nextjs"
