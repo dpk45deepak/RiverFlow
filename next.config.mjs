@@ -1,13 +1,17 @@
-// /** @type {import('next').NextConfig} */
-// const nextConfig = {};
-
-// export default nextConfig;
-
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    distDir: 'build',   // default is `.next`, but now it will be `build/`
-  };
-  
-  export default nextConfig;
-  
+    images: {
+        remotePatterns: [
+            {
+                protocol: "https",
+                hostname: "cloud.appwrite.io",
+            },
+            {
+                protocol: "https",
+                hostname: "fra.cloud.appwrite.io",
+            }
+        ],
+    },
+};
+
+export default nextConfig;
